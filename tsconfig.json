@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2018",
+    "outDir": "dist",
+    "lib": [ "ES2018", "dom" ],
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "strictBindCallApply": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
