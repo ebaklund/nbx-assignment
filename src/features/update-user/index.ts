@@ -1,5 +1,5 @@
 'use strict';
 
 export = {
-  handler: require('./put-user-handler')
+  handler: require('./update-user-handler')
 };

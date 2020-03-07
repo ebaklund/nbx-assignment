@@ -10,11 +10,17 @@ class Uuid {
     if (!validateUuid(uuidStr))
       throw new TypeError('Input is not a valid uuid string format');
 
-    _uuidStr.set(this, uuid.v4());
+    _uuidStr.set(this, uuidStr);
   }
 
   toString (): string {
     return _uuidStr.get(this) as string;
+  }
+
+  static fromString(uuidStr: string): Uuid | null {
+    return validateUuid(uuidStr)
+      ? new Uuid(uuidStr)
+      : null;
   }
 
   static getRandom (): Uuid {

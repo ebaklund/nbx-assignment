@@ -9,17 +9,17 @@ import RegisteredUser = require('../../common/registered-user');
 
 module.exports = (req: express.Request, res: express.Response) => {
   try {
-    const reqId = Uuid.fromString(req.params.id);
+    const reqUser = RegisteredUser.fromJson(req.body);
 
-    if (!reqId)
-      return errRes(res, 404, `malformed user id: '${req.params.id || ''}'`);
+    if (!reqUser)
+      return errRes(res, 422, 'body not recognized as user data');
 
-    const deletedUser = db.deleteUser(reqId);
+    const updatedUser = db.updateUser(reqUser);
 
-    if (!deletedUser)
-      return errRes(res, 404, `user not found. id:  '${reqId.toString()}'`);
+    if (!updatedUser)
+      return errRes(res, 404, `user not found. id:  '${reqUser.id}'`);
 
-    res.status(204).send();
+    res.status(200).json(updatedUser.toJson());
   }
   catch (err) {
     errRes(res, 500, err.message);

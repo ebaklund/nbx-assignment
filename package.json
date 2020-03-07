@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "rm -Rf ./dist && tsc",
     "build": "npm run compile && docker-compose build",
-    "launch": "npm run build && docker-compose up -d"
+    "launch": "npm run build && docker-compose up"
   },
   "repository": {
     "type": "git",

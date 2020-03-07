@@ -1,23 +1,24 @@
 'use strict'
 
-const validateJson = require('jsonschema').validate;
+import { validate } from 'jsonschema';
 
-const schema = {
-  type: 'object',
-  properties: {
-    id: 'string',
-    name: 'string',
-    email: 'string'
-  },
-  required: [ 'id', 'name', 'email' ]
-};
-
+import BaseUser = require('./base-user');
 import UnregisteredUser = require('./unregistered-user');
 import Uuid = require('./uuid');
 
+const schema = {
+  id: '/RegisteredUser',
+  type: 'object',
+  properties: {
+    id: { type: 'string', "required": true },
+    name: { type: 'string', "required": true },
+    email: { type: 'string', "required": true },
+  }
+};
+
 const _id = new WeakMap<object, Uuid>();
 
-class RegisteredUser extends UnregisteredUser {
+class RegisteredUser extends BaseUser {
   constructor (id: Uuid, name: string, email: string) {
     super(name, email);
     _id.set(this, id);
@@ -27,12 +28,22 @@ class RegisteredUser extends UnregisteredUser {
     return _id.get(this) as Uuid;
   }
 
-  static register(newUser: UnregisteredUser): RegisteredUser {
+  toJson (): object {
+    return {
+      id: this.id.toString(),
+      name: this.name,
+      email: this.email
+    };
+  }
+
+  static from (newUser: UnregisteredUser): RegisteredUser {
     return new RegisteredUser(Uuid.getRandom(), newUser.name, newUser.email);
   }
 
   static fromJson (json: any): RegisteredUser | null {
-    if (!validateJson(json, schema))
+    const vres = validate(json, schema);
+
+    if (!vres)
       return null;
 
     if (!Uuid.isValidUuidStr(json.id))
@@ -42,4 +53,4 @@ class RegisteredUser extends UnregisteredUser {
   }
 }
 
-export = UnregisteredUser;
+export = RegisteredUser;

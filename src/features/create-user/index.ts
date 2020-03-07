@@ -1,5 +1,5 @@
 'use strict';
 
 export = {
-  handler: require('./post-user-handler')
+  handler: require('./create-user-handler')
 };

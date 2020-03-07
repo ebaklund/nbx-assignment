@@ -1,35 +1,27 @@
 'use strict'
 
-const validateJson = require('jsonschema').validate;
+import { validate } from 'jsonschema';
+
+const BaseUser = require('./base-user');
 
 const schema = {
+  id: '/UnregisteredUser',
   type: 'object',
   properties: {
-    name: 'string',
-    email: 'string'
-  },
-  required: [ 'name', 'email' ]
+    name: { type: 'string', "required": true },
+    email: { type: 'string', "required": true },
+  }
 };
 
-const _name = new WeakMap<object, string>();
-const _email = new WeakMap<object, string>();
-
-class UnregisteredUser {
+class UnregisteredUser extends BaseUser {
   constructor (name: string, email: string) {
-    _name.set(this, name);
-    _email.set(this, email);
-  }
-
-  get name (): string {
-    return _name.get(this) as string;
-  }
-
-  get email (): string {
-    return _email.get(this) as string;
+    super(name, email);
   }
 
   static fromJson (json: any): UnregisteredUser | null {
-    if (!validateJson(json, schema))
+    const vres = validate(json, schema);
+
+    if (!vres)
       return null;
 
     return new UnregisteredUser(json.name, json.email);

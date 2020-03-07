@@ -11,12 +11,13 @@ import UpdateUser = require('./features/update-user');
 import DeleteUser = require('./features/delete-user');
 
 const app = express();
+app.use(express.json());
 app.get('/', GetHealth.handler);
 app.get('/users', GetUsers.handler);
 app.post('/users', CreateUser.handler);
-app.get('/users{userId}', GetUser.handler);
-app.put('/users{userId}', UpdateUser.handler);
-app.delete('/users{userId}', DeleteUser.handler);
+app.get('/users/:id', GetUser.handler);
+app.put('/users/:id', UpdateUser.handler);
+app.delete('/users/:id', DeleteUser.handler);
 
 const server = app.listen(8080, () => {
     const port = (server.address() as AddressInfo).port;
