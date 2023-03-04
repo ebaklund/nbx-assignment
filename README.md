@@ -1,2 +1,3 @@
 # nbx-assignment
-NBX Backend Recruitment Assignment 2020
+NBX Backend
+Proposed solution to NBX Recruitment Assignment 2020
